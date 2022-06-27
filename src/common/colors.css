@@ -1,0 +1,26 @@
+@value makerBlack: black;
+@value makerWhite: white;
+@value makerLightGrey: #e8e7e6;
+@value makerLightPink: #ffeae8;
+@value makerGrey: #626262;
+@value makerGreen: #385461;
+@value makerPink: pink;
+@value makerShadow: rgba(217, 217, 217, 1);
+@value makerColorful: linear-gradient(166deg, rgba(237, 193, 211, 1) 0%,rgba(212, 149, 161, 1) 60%, rgba(162, 63, 63, 1) 100%, rgba(127, 188, 242, 1) 100%);
+@value makerWheat: wheat;
+
+/*
+Common Folder: 프로젝트에서 전반적으로 사용되는 CSS정의
+PostCSS : @value key: value;
+    -> 반복적으로 사용되는 값은 5와 같이 의미를 예측할 수 없도록 적는것이 아니라, MaxUser: 5와 같이 작성해야 함
+    -> 반복적으로 사용되는 값을 개별적으로 할당해두면, 해당 CSS를 변경하여 테스트해보고자 할 때 모든 값을 변경해야 하는 번거로움이 있음
+    -> 따라서 해당 스크립트를 통해 Post CSS로 프로젝트 전반에 사용되는 CSS를 key와 value로 설정
+
+    -> 사용법(index.css와 같은 css파일에서 key값을 쓰는 방법):
+    1. 파일명을 index.module.css와 같이 변경 
+    2. 해당 css를 import하는 파일에서도 마찬가지로 module.css로 변경
+    3. index.module.css에서 아래와 같이 코드입력
+        @value "key" from "css root";
+        background-ck\olor: "key";
+        
+*/
