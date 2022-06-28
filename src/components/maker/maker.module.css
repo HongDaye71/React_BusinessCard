@@ -1,0 +1,31 @@
+@value mediaQuery from '../../common/size.css';
+
+.maker {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    /*
+    [flex-grow]
+    값이 0인경우: 화면이 커져도 아이템의 크기는 고정됨
+    값이 1인경우: 화면이 커지면 아이템의 크기가 함께 커짐
+
+    [flex-shrink]
+    값이 0인경우: 화면이 작아져도 아이템의 크기는 고정됨
+    값이 1인경우: 화면이 작아지면 아이템의 크기가 함께 작아짐
+
+    [flex:1]
+    flex-grow속성과 flex-shrink속성, flex-basis속성을 축약해서 flex로 표현할 때에 flex:1은 flex: 1 1 0을 의미한다. 즉 flex-grow와 flex-shrink 값이 1이기 때문에 flex container크깅 따라 아이템의 크기도 커지거나 작아진다는 의미이다
+    */
+}
+
+@media screen and (max-width: mediaQuery){
+    .container {
+        flex-direction: column;
+    }
+}
