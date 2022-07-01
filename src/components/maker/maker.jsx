@@ -60,11 +60,17 @@ const Maker = ({ authService }) => {
         //사용자의 정보변경이 발생한 경우 실행되며, 로그아웃으로 인해 정보가 남아있지 않다면 Home으로 화면이동
     })
 
+    const addCard = card => {
+        const updated = [...cards, card];   
+        setCards(updated);
+        //기존의 card복사 후 새롭게 받은 card추가
+    }
+
     return(
         <section className={styles.maker}>
             <Header onLogout={onLogout}/>
             <div className={styles.container}>
-                <Editor cards={cards}/>
+                <Editor cards={cards} addCard={addCard}/>
                 <Preview cards={cards}/>
             </div>
             <Footer />
