@@ -1,27 +1,54 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Button from '../button/button';
 import Image_file_input from '../image_file_input/image_file_input';
 import styles from './card_edit_form.module.css'
 
-const Card_edit_form = ({ card }) => {
-    const {name, company, title, email, message, theme, fileName, fileURL} = card;
+const Card_edit_form = ({ card, updateCard, deleteCard }) => {
+    const nameRef = useRef();
+    const companyRef = useRef();
+    const themeRef = useRef();
+    const titleRef = useRef();
+    const emailRef = useRef();
+    const messageRef = useRef();
 
-    const onSubmit = () => {
+    const {
+        name,
+        company,
+        theme,
+        title,
+        email,
+        message,
+        fileName,
+        fileURL,
+    } = card;
+    
+    const onChange = (event) => {
+        if (event.currentTarget == null) {
+            return;
+        }
+        event.preventDefault();
+        updateCard({ 
+            ...card, //기존 card의 key,value사용
+            [event.currentTarget.name]: event.currentTarget.value, //name만 현재 입력된 값으로 변경사용
+        })
+    }
 
+    const onSubmit = (event) => {
+        deleteCard(card);
     }
 
     return (
         <form className={styles.form}>
-            <input className={styles.input} type="text" name="name" value={name} />
-            <input className={styles.input} type="text" name="company" value={company} />
-            <select className={styles.select} name="theme" value={theme}>
+            <input className={styles.input} type="text" name="name" ref={nameRef} value={name} onChange={onChange}/>
+            <input className={styles.input} type="text" name="company" ref={companyRef} value={company} onChange={onChange}/>
+            <select className={styles.select} name="theme" ref={themeRef} value={theme} onChange={onChange}>
                 <option value="light">light</option>
                 <option value="dark">dark</option>
                 <option value="colorful">colorful</option>
             </select>
-            <input className={styles.input} type="text" name="title" value={title} />
-            <input className={styles.input} type="text" name="email" value={email} />
-            <textarea className={styles.textarea} name="message" value={message}></textarea>
+            <input className={styles.input} type="text" name="title" ref={titleRef} value={title} onChange={onChange}/>
+            <input className={styles.input} type="text" name="email" ref={emailRef} value={email} onChange={onChange}/>
+            <textarea className={styles.textarea} name="message" ref={messageRef} value={message} onChange={onChange}></textarea>
             <div className={styles.fileInput}>
                 <Image_file_input />
             </div>
@@ -31,3 +58,9 @@ const Card_edit_form = ({ card }) => {
 };
 
 export default Card_edit_form;
+
+/*
+[CardEditForm 수정과정(고정값 출력 -> 입력값 출력)]
+1. useRef를 통해 입력값 받아오기
+2. 입력값 업데이트 시 onChange() 호출
+*/
