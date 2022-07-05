@@ -1,17 +1,19 @@
-import React, { useRef }from 'react';
+import React, { useRef, useState }from 'react';
 import styles from './image_file_input.module.css';
 
 const Image_file_input = ({ imageUploader, name, onFileChange }) => {
+    const [loading, setLoading] = useState(false); //boolean state
     const inputRef = useRef();
     const onButtonClick = (event) => {
         event.preventDefault();
         inputRef.current.click();
     }
     const onChange = async event => {
-        console.log(event.target.files[0]);
-        const uploaded = await imageUploader.upload(event.target.files[0]);
-        console.log(uploaded);
+        setLoading(true);
+        const uploaded = await imageUploader.upload(event.target.files[0]); 
         //업로드가 완료되면, uploaded에 taget.files[0]할당
+        setLoading(false);
+
         onFileChange({
             name: uploaded.original_filename,
             url: uploaded.url,
@@ -26,11 +28,9 @@ const Image_file_input = ({ imageUploader, name, onFileChange }) => {
             accept="image/*" 
             name="file" 
             onChange={onChange}/>
-        <button 
-            className={styles.button} 
-            onClick={onButtonClick}>
-            {name || 'No file'}
-        </button> 
+        { !loading && <button className={`${styles.button} ${name ? styles.pink: styles.grey}`} onClick={onButtonClick}> {name || 'No file'} 
+        </button> }
+        { loading && <div className={styles.loading}></div>}
     </div>
 };
 
