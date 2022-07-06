@@ -6,15 +6,15 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = ({ authService }) => {
   const navigate = useNavigate();
-
-  const goToMaker = userId => {
-    navigate('/maker')
-    //state: { id: userId }
+  const goToMaker = (userId) => {
+    navigate(
+      '/maker', 
+      { state: {id: userId} });
   }
 
   useEffect(() => {
-    authService.onAuthChange(user => {
-      user && goToMaker(user.id) 
+    authService.onAuthChange(
+      user => {user && goToMaker(user.id) 
       //사용자의 정보변경이 발생한 경우 실행되며, 이전 로그인으로 인해 정보가 남아있다면 Maker로 화면이동
     })
   })
@@ -43,6 +43,7 @@ const Login = ({ authService }) => {
         </ul>
       </section>
       <Footer />
+
     </section>
   );
 };

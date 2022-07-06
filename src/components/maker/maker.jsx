@@ -3,46 +3,14 @@ import Header from '../header/header'
 import Footer from '../footer/footer'
 import React, { useEffect } from 'react';
 import styles from './maker.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Editor from '../editor/editor';
 import Preview from '../preview/preview';
 
-const Maker = ({ FileInput, authService }) => {
-    const [cards, setCards] = useState({
-        1: {
-            id: '1',
-            name: 'Ellie',
-            company: 'Samsung',
-            theme: 'light',
-            title: 'Software Engineer',
-            email: 'ellie@gmail.com',
-            message: 'go for it',
-            fileName: 'ellie',
-            fileURL : null
-        },
-        2: {
-            id: '2',
-            name: 'Daye',
-            company: 'Hyundai',
-            theme: 'dark',
-            title: 'Software Engineer',
-            email: 'hongdaye71@gmail.com',
-            message: 'go for it',
-            fileName: 'daye',
-            fileURL : null
-        },
-        3: {
-            id: '3',
-            name: 'Jihwan',
-            company: 'Hanyang University',
-            theme: 'colorful',
-            title: 'Researcher',
-            email: 'Jihwan@gmail.com',
-            message: 'go for it',
-            fileName: 'ellie',
-            fileURL : null
-        },
-    });
+const Maker = ({ FileInput, authService, cardRepository }) => {
+    const location = useLocation();
+    const [cards, setCards] = useState({});
+    const [userId, setUserId] = useState(location.state.id);
 
     const navigate = useNavigate();
 
@@ -50,15 +18,31 @@ const Maker = ({ FileInput, authService }) => {
         authService.logout();
     };
 
+    //사용자 아이디 변경시 마다 DB정보 업데이트
+    useEffect(() => {
+        if(!userId) {
+            return;
+        }
+        const stopSync = cardRepository.syncCards(userId, cards => {
+            setCards(cards);//cards를 두 번째 인자로 전달하여 onUpdate발생 시 value를 cards에 할당
+        })
+        return () => stopSync();
+        //컴포넌트 언마운트 시 정리해야 하는 일을 콜백함수 형태로 useEffect에서 리턴해주면, 리액트가 자동으로 언마우트 시 호출
+        //ref.off()가 stopSync에 할당 -> 언마운트시 stopSync실행 -> 할당된 ref.off()실행
+    }, [userId]);
+
+    //로그인 구현
     useEffect(() => {
         authService.onAuthChange(user => {
-            if(!user) {
+            if(user) {
+                
+                //console.log(`user ${user}`)
+            } else {
                 navigate('/');
-                console.log('clicked logout button')
             }
         });
         //사용자의 정보변경이 발생한 경우 실행되며, 로그아웃으로 인해 정보가 남아있지 않다면 Home으로 화면이동
-    })
+    });
 
     const createOrUpdateCard = card => {
         setCards(cards => {
@@ -66,6 +50,7 @@ const Maker = ({ FileInput, authService }) => {
             updated[card.id] = card; //해당하는 key에 card업데이트
             return updated; 
             });
+        cardRepository.saveCard(userId, card); //userId와 업데이트 할 card전달
         
         /*
         =============================================================================
@@ -97,6 +82,7 @@ const Maker = ({ FileInput, authService }) => {
             delete updated[card.id] 
             return updated; 
             });
+        cardRepository.removeCard(userId, card);
     }
 
     return(

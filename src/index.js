@@ -6,8 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import AuthService from './service/auth_service'
 import ImageUploader from './service/image_uploader';
 import Image_file_input from './components/image_file_input/image_file_input';
+import CardRepository from './service/card_repository';
 
 const authService =  new AuthService();
+const cardRepository = new CardRepository();
 const imageUploader = new ImageUploader();
 const FileInput = props => (
 <Image_file_input {...props} imageUploader={imageUploader}/>
@@ -20,7 +22,10 @@ FileInput: props를 받으면 Image_file_input을 생성하여 전달(props자�
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App authService={authService} FileInput={FileInput}/>
+    <App 
+      authService={authService} 
+      FileInput={FileInput}
+      cardRepository={cardRepository}/>
   </React.StrictMode>
 );
 
