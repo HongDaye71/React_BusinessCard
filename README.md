@@ -4,7 +4,7 @@
 Business Card Maker is a web site that designs business cards based on the information entered by the user
 
 # Development Period
-From July 1, 2022 to July 17, 2022
+From July 1, 2021 to July 17, 2021
 
 ## Development Environment
 ### Environment<br/>
